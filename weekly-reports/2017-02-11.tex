@@ -1,0 +1,91 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,enumerate,fancyhdr,calc}
+
+\newcommand{\mmm}{1in}
+\newcommand{\hhh}{28pt}
+
+\usepackage[margin=\mmm]{geometry}
+
+\addtolength{\topmargin}{\hhh}
+\setlength{\textheight}{10.5in-\mmm-\mmm-\hhh}
+
+\pagestyle{fancy}
+
+\newcommand{\dhl}{Dispersive Hydrodynamics Lab Weekly Report}
+\newcommand{\ucb}{University of Colorado Boulder}
+\newcommand{\appm}{Department of Applied Mathematics}
+\newcommand{\me}{Grant Baker}
+\newcommand{\ymd}{2017-02-11}
+
+\title{\textbf{\dhl}}
+\author{\textbf{\me}\\ \textbf{\appm}\\ \textbf{\ucb}}
+\date{\textbf{\ymd}}
+
+\begin{document}
+
+\lhead{{\textbf{\me} \\ \textbf{\ymd}}}
+\rhead{{\ucb \space \appm \\ \dhl}}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\headheight}{28pt}
+
+% \maketitle
+
+\section*{Goals}
+% In this section, you should summarize what you planned to accomplish this week. This can be brief, but should provide enough information so that other lab members can understand what you are working on currently. If you have many tasks that you planned to finish this week, a bulleted list may be helpful using the "enumerate" environment.
+
+Seeing as this is my first weekly report, I will list my goals for the past three weeks.
+\begin{enumerate}[(a)]
+  \item Meet the other members of the lab
+
+  \item Familiarize myself with the lab setup and how to run the water table experiment
+
+  \item Learn basic mathematical formulation regarding the water waves I'll be working with
+
+  \item Design and build a device that fills the water tank in a way which reduces the vorticity of the water inside
+
+  \item Study and implement Fourier Transform Profilometry as a way of quantitatively measuring the water wave phenomena
+\end{enumerate}
+
+\section*{Accomplishments}
+% In this section, address which items from the previous section were accomplished this week. Here you can provide any figures or main results generated from your recent work. Any lengthy calculations should be included in a separate section.
+
+I have accomplished most of the goals I had since I started to work. Being more specific:
+\begin{enumerate}[(a)]
+  \item I know all of the other lab members' names, and have a general idea of the projects they are working on and their roles and research goals.
+
+  \item I am now fully capable of both running an experiment on the water table and cleaning up the inevitable water spills.
+
+  \item I read the chapter proposing the basic formulations on water waves in R.S. Johnson's \textit{A Modern Introduction to the Mathematical Theory of Water Waves}. I read about the nondimensionalization and the results, but still have some confusion.
+
+  \item I designed a PVC device (drawn in more detail in my lab notebook) shaped like a rectangle that has holes drilled in it. It fits perfectly in the water table tank and, if a pair of sponges are placed in the center, reduces vorticity by attempting to balance out the water pressure entering from all areas of the tank.
+
+  The device can be further adjusted as needed, and we have leftover PVC pipe in case of a design flaw. The original plan called for sealing all of its joints, but after experiment that may no longer be needed.
+
+  \item I set up the projector and connected it to my chromebook. I wrote a \textit{Mathematica} notebook to generate a fringe pattern. I focused the projector.
+
+  A filter and a polarizer are needed for the lens, which Pat is looking into.
+
+  I will need a better understanding of the FTP theory and algorithm before I can implement it. I will likely work with image processing before looking further into the algorithm.
+\end{enumerate}
+
+\section*{Questions}
+% Previous sections can be reworked to fit your personal liking, but this section is crucial. When starting research, unexpected questions arise and can slow progress and learning. This often is frustrating and makes research less enjoyable. Use this section to organize your questions regarding your work--sometimes just writing out your thoughts can help you reorganize and look at problems differently.
+
+Being new to the lab, I had many questions with theory and experiment as one might expect.\\
+
+I have a basic idea on the theory I read in the book, but I don't yet have a firm grasp on the material. I understand what nondimensionalization accomplishes, but I am not quite sure how to go between the nondimensionalized theory and the dimensional experimental data, once we have some.\\
+
+I don't know FTP well enough to implement, so I have many comprehension questions on the paper. It may take a few more read-throughs to understand.
+
+\section*{Calculations/code}
+% Use this section to store any calculations/code. I know using tex to write up your calculations is time consuming, but it will make your life easier when you are writing a paper. Including any code here will make it easier to find should you misremember where it is saved (this happens to me all too often).
+
+I have not made any calculations yet, except for those needed for my design of the PVC vorticity apparatus.\\
+
+I wrote a \textit{Mathematica} program to generate and save an image with lines of a specified color on a background of specified color with a specified pixel density. I measuered the pixel density of the projector setup, with each pixel being about $0.5$ mm. I subjectively determined that the highest line density that can be distinguished from background is about $6$ pixels per line.\\
+
+All of my code can be found at:
+
+\texttt{https://github.com/grantbaker/dispersive-hydrodynamics}
+
+\end{document}
