@@ -1,0 +1,71 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,enumerate,fancyhdr,calc}
+
+\newcommand{\mmm}{1in}
+\newcommand{\hhh}{28pt}
+
+\usepackage[margin=\mmm]{geometry}
+
+\addtolength{\topmargin}{\hhh}
+\setlength{\textheight}{10.5in-\mmm-\mmm-\hhh}
+
+\pagestyle{fancy}
+
+\newcommand{\dhl}{Dispersive Hydrodynamics Lab Weekly Report}
+\newcommand{\ucb}{University of Colorado Boulder}
+\newcommand{\appm}{Department of Applied Mathematics}
+\newcommand{\me}{Grant Baker}
+\newcommand{\ymd}{2017-02-19}
+
+\title{\textbf{\dhl}}
+\author{\textbf{\me}\\ \textbf{\appm}\\ \textbf{\ucb}}
+\date{\textbf{\ymd}}
+
+\begin{document}
+
+\lhead{{\textbf{\me} \\ \textbf{\ymd}}}
+\rhead{{\ucb \space \appm \\ \dhl}}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\headheight}{28pt}
+
+% \maketitle
+
+\section*{Goals}
+% In this section, you should summarize what you planned to accomplish this week. This can be brief, but should provide enough information so that other lab members can understand what you are working on currently. If you have many tasks that you planned to finish this week, a bulleted list may be helpful using the "enumerate" environment.
+
+In the past week, I have been working on understanding the Fourier Transform Profilometry as a way of quantitatively measuring the water wave phenomena.
+\begin{enumerate}[(a)]
+    \item Understand the paper on the FTP algorithm
+
+    \item Begin a python implementation of the algorithm
+
+    \item Work on the experimental setup for the physical requirements for FTP
+\end{enumerate}
+
+\section*{Accomplishments}
+% In this section, address which items from the previous section were accomplished this week. Here you can provide any figures or main results generated from your recent work. Any lengthy calculations should be included in a separate section.
+
+I have accomplished most of the goals I had since I started to work. Being more specific:
+\begin{enumerate}[(a)]
+    \item I have read several times the paper on the FTP algorithm. I understand the experimental setup, but I don't fully grasp the math behind the process
+
+    \item I have not yet began the implementation due to questions I have about the paper. I should also talk to Adam and discuss what language we should use to implement (python vs matlab)
+
+    \item Adam and Pat have looked for polarizers and filters. I've written code to generate fringe patterns of grids or sinusoidal variations, and can generate more if needed.
+\end{enumerate}
+
+\section*{Questions}
+% Previous sections can be reworked to fit your personal liking, but this section is crucial. When starting research, unexpected questions arise and can slow progress and learning. This often is frustrating and makes research less enjoyable. Use this section to organize your questions regarding your work--sometimes just writing out your thoughts can help you reorganize and look at problems differently.
+
+I don't understand the specific math in the paper, such as what $A$ and $B$ do. I don't know what a Hilbert transformation is, but later they say it is related to the Fourier transformation.
+
+\section*{Calculations/code}
+% Use this section to store any calculations/code. I know using tex to write up your calculations is time consuming, but it will make your life easier when you are writing a paper. Including any code here will make it easier to find should you misremember where it is saved (this happens to me all too often).
+
+I added to my \textit{Mathematica} notebook so that it can generate sinusoidal fringe patterns, and more general fringe patterns.\\
+
+All of my code can be found at:
+
+\texttt{https://github.com/grantbaker/dispersive-hydrodynamics}
+
+\end{document}
