@@ -20,7 +20,7 @@ title('Image A FFT2 Phase')
 
 %Blur Kernel
 ksize = 31; %size of kernel
-kernel = zeros(ksize);
+% kernel = zeros(ksize);
 
 %Gaussian Blur
 s = 3; %standard deviation
@@ -48,7 +48,7 @@ kernelimagepad(1:ksize, 1:ksize) = kernel;
 fftimagepad = fft2(imagePad);
 fftkernelpad = fft2(kernelimagepad);
 
-fftkernelpad(find(fftkernelpad == 0)) = 1e-6;
+fftkernelpad(fftkernelpad == 0) = 1e-6;
 
 %Multiply FFTs
 fftblurimagepad = fftimagepad.*fftkernelpad;
