@@ -1,4 +1,4 @@
-% generateFringePattern.m
+% generateFringePattern
 % Generates a sinusoidal fringe pattern, mimicking the original in
 % GenerateFringePattern.nb
 
