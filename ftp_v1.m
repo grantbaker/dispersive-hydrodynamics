@@ -40,6 +40,7 @@ D = 50;
 
 h = delta_phi * L .* (delta_phi - 2*pi*D/p).^-1;
 
-
-% surf(1:1900, 1:1080, h)
+figure;
+surf(1:1900, 1:1080, h)
+figure;
 contour(1:1900, 1:1080, h)
