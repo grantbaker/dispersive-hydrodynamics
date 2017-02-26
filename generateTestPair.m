@@ -21,7 +21,7 @@ switch im_test
         end
     case 2
         dataim = refim;
-        for i=1:4
+        for i=1:12
             dataim((400+30*i):(429+30*i),400:800) = dataim((400+30*i):(429+30*i),(400+i):(800+i));
         end
 end

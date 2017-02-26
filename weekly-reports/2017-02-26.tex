@@ -1,0 +1,134 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,enumerate,fancyhdr,calc}
+
+\newcommand{\mmm}{1in}
+\newcommand{\hhh}{28pt}
+
+\usepackage[margin=\mmm]{geometry}
+
+\addtolength{\topmargin}{\hhh}
+\setlength{\textheight}{10.5in-\mmm-\mmm-\hhh}
+\setlength{\parindent}{0in}
+
+\pagestyle{fancy}
+
+\newcommand{\dhl}{Dispersive Hydrodynamics Lab Weekly Report}
+\newcommand{\ucb}{University of Colorado Boulder}
+\newcommand{\appm}{Department of Applied Mathematics}
+\newcommand{\me}{Grant Baker}
+\newcommand{\ymd}{2017-02-26}
+
+\title{\textbf{\dhl}}
+\author{\textbf{\me}\\ \textbf{\appm}\\ \textbf{\ucb}}
+\date{\textbf{\ymd}}
+
+\begin{document}
+
+\lhead{{\textbf{\me} \\ \textbf{\ymd}}}
+\rhead{{\ucb \space \appm \\ \dhl}}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\headheight}{28pt}
+
+% \maketitle
+
+\section*{Goals}
+% In this section, you should summarize what you planned to accomplish this week. This can be brief, but should provide enough information so that other lab members can understand what you are working on currently. If you have many tasks that you planned to finish this week, a bulleted list may be helpful using the "enumerate" environment.
+
+In the past week, I have been working on implementation of the Fourier Transform Profilometry as a tool for quantitatively measuring the water wave phenomena. My goals for the week were
+\begin{enumerate}[(a)]
+    \item Understand the paper on the FTP algorithm
+
+    \item Begin a MATLAB implementation of the algorithm
+
+    \item Test my implementation of the algorithm
+\end{enumerate}
+
+\section*{Accomplishments}
+% In this section, address which items from the previous section were accomplished this week. Here you can provide any figures or main results generated from your recent work. Any lengthy calculations should be included in a separate section.
+
+I have accomplished most of the goals I had since I started to work. Being more specific:
+\begin{enumerate}[(a)]
+    \item I worked through the FTP paper and I now understand all of the experimental setup and most of the math. I understand their notation, and where their derivations come from.
+
+    \item I have a preliminary MATLAB implementation of the algorithm using MATLAB's built-in matrix manipulation and Hilbert transform function.
+
+    \item I generated a few test images based on what I \textit{imagine} the distorted fringe patterns will look like by manipulating pixels, and the algorithm produced results which had some expected features and some unexpected ones.
+\end{enumerate}
+
+\section*{Questions}
+% Previous sections can be reworked to fit your personal liking, but this section is crucial. When starting research, unexpected questions arise and can slow progress and learning. This often is frustrating and makes research less enjoyable. Use this section to organize your questions regarding your work--sometimes just writing out your thoughts can help you reorganize and look at problems differently.
+
+What exactly is a Hilbert transform? The Cobelli paper has it in the context of
+\begin{align*}
+I(Y) &= \mathcal{A}(Y)\cos \left(\frac{2\pi}{p_c}Y + \varphi (Y)\right)\\
+\mathcal{H}\left(I(Y)\right) &= \mathcal{A}(Y) \exp\left( i\left( \frac{2\pi}{p_c} Y + \varphi(Y)\right)\right)
+\end{align*}
+The paper also uses Hilbert transform in the theory section and Fourier Transform (specifically FFT) in the experimental section, but I could not get an implementation of FFT to recover the phase shifts successfully.\\
+
+How much image processing is required for images that can be used to collect data? I have been looking into machine learning for this a little bit, but I'm not sure it will be useful. We may have to write a script to do it or do it by hand, depending on the quality of the images produced.
+
+\section*{Calculations/code}
+% Use this section to store any calculations/code. I know using tex to write up your calculations is time consuming, but it will make your life easier when you are writing a paper. Including any code here will make it easier to find should you misremember where it is saved (this happens to me all too often).
+
+I'll put some notes on the Cobelli paper that helped my understanding of it:
+\begin{itemize}
+  \item $I(X,Y)$ is the light intensity at a given point $(X,Y)$ in the data image.
+
+  \item $I_0(X,Y)$ is the light intensity at a given point in the reference image. This is usually a sinusoidal fringe pattern.
+
+  \item $\mathcal{A}(X,Y)$ is the distortion in the light intensity due to the height difference in the reflecting surface (things that are further away are usually darker). This is usually taken to be a constant since the height difference in the surface is much less than the distance between the surface and the camera.
+
+  \item $\mathcal{B}(X,Y) = I^{\text{ref}}(X,Y)$ is the adjustment in illumination due to inhomogeneities in the projection or the detection.
+
+  \item $\Delta\varphi$ is the phase difference from the reference image to the data image, $\varphi - \varphi_0$, which is used to calculate the height
+
+  \item $p_c$ is the periodicity of the original intensity pattern, e.g. the \texttt{freq} parameter in my scripts.
+
+  \item $\mathcal{H}(\cdot)$ is the \textit{Hilbert Transform}.
+
+  \item $\mathcal{H}^{*}(\cdot)$ is the complex conjugate of the \textit{Hilbert Transform}.
+\end{itemize}
+
+I will now repeat the derivation of the height recovery, given two normalized signals $I(X,Y)$ and $I_0(X,Y)$ (i.e.  $\mathcal{B} = 0$)\\
+
+Using geometric properties, we have that
+\[
+h = \frac{\Delta \varphi L}{\Delta \varphi - \frac{2 \pi}{p} D}
+\]
+where $L$ is the height from projector/camera to surface, and $D$ is their separation. So, we only need to determine $\Delta \varphi$ from the signals.\\
+
+We have signals of the form
+\begin{align*}
+  I_0(X,Y) &= \mathcal{A}\cos \left(\frac{2\pi}{p}Y + \varphi_0 (X,Y)\right)\\
+  I(X,Y) &= \mathcal{A}\cos \left(\frac{2\pi}{p}Y + \varphi (X,Y)\right)
+\end{align*}
+
+By taking the Hilbert Tranform, we get
+\begin{align*}
+  \mathcal{H}\left(I_0(X,Y)\right) &= \mathcal{A} \exp\left( i\left( \frac{2\pi}{p} Y + \varphi_0(X,Y)\right)\right)\\
+  \mathcal{H}\left(I(X,Y)\right) &= \mathcal{A} \exp\left( i\left( \frac{2\pi}{p} Y + \varphi(X,Y)\right)\right)
+\end{align*}
+So, by employing the conjugate transform, we can find the difference $\Delta \varphi$
+\begin{align*}
+  \mathcal{H}(I(X,Y))\mathcal{H}^{*}(I_0(X,Y)) &= |\mathcal{A}|^2 \exp\left( i\left( \frac{2\pi}{p} Y + \varphi(X,Y) - \frac{2\pi}{p} Y - \varphi_0(X,Y)\right)\right)\\
+  &= |\mathcal{A}|^2 \exp\left( i\left( \varphi(X,Y) - \varphi_0(X,Y)\right)\right)\\
+  &= |\mathcal{A}|^2 \exp\left( i\Delta\varphi(X,Y)\right)
+\end{align*}
+By taking the logarithm,
+\begin{align*}
+  \log \left[\mathcal{H}(I(X,Y))\mathcal{H}^{*}(I_0(X,Y)) \right] &= \log
+  \left[|\mathcal{A}|^2 \exp\left( i\Delta\varphi(X,Y)\right)\right]\\
+  &= \log |\mathcal{A}|^2 + i\Delta \varphi(X,Y)
+\end{align*}
+So, we determine that
+\begin{align*}
+  \Delta \varphi (X,Y) &= \Im\left(\log \left[\mathcal{H}(I(X,Y))\mathcal{H}^{*}(I_0(X,Y)) \right]\right)
+\end{align*}
+
+My MATLAB implementation of this algorithm uses this derivation.
+
+All of my code can be found at:
+
+\texttt{https://github.com/grantbaker/dispersive-hydrodynamics}
+
+\end{document}
