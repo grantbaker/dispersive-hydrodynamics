@@ -3,7 +3,7 @@
 % implementation of FTP
 
 % set the test you want to generate
-im_test = 3;
+im_test = 1;
 
 refim = 1:(1920/96);
 refim = 0.5 + 0.5 * cos(2*pi*(refim/1920)*96);
@@ -16,7 +16,7 @@ switch im_test
     case 1
         dataim = refim;
         shift = dataim(400:600,400:600);
-        for i=1:1
+        for i=1:7
             dataim(400:600,(400-i):(600-i)) = shift;
         end
         

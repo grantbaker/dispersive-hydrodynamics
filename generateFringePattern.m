@@ -16,7 +16,7 @@ hcolor = 1;
 genInv = 1;
 
 % phase frequency across image
-freq = 10;
+freq = 200;
 
 % chooses to display image after generation
 dispImg = 1;

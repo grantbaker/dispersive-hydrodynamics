@@ -68,12 +68,14 @@ phase = unwrap(phase');
 
 h = phase * L .* (phase - 2*pi*D/p).^-1;
 
+% h = abs(fft2(h));
+
 %d = size(h)
 
 %=========Surface and Contour Plots======
 figure;
-surf(1:1080, 1:1900, h)
+surf(1:1080, 1:1920, h,'edgecolor','none')
 
 figure;
-contour(1:1080, 1:1900, h)
+contourf(1:1080, 1:1920, h)
 
