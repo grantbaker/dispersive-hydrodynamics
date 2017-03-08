@@ -7,16 +7,22 @@ D = 50; %distance between camera and projector
 
 %=========Data Analysis Variables===========
 hpWin = 3; %width of high pass Gaussian filter
+use_gpu = 1; %use gpu to store and process images
 
 %=========Read Images=============
-refim = gpuArray(rgb2gray(im2double(imread('refim.png'))));
-dataim = gpuArray(rgb2gray(im2double(imread('dataim.png'))));
+if use_gpu == 1
+    refim = gpuArray(rgb2gray(im2double(imread('refim.png'))));
+    dataim = gpuArray(rgb2gray(im2double(imread('dataim.png'))));
+else 
+    refim = rgb2gray(im2double(imread('refim.png')));
+    dataim = rgb2gray(im2double(imread('dataim.png')));
+end
 
 if (size(refim) ~= size(dataim))
     disp('dimensions must match')
 end
 
-[vdim,hdim] = size(refim);
+[vdim, hdim] = size(refim);
 
 %========Rescale greyscale images===========
 mingrey = min(min(refim));
@@ -81,7 +87,7 @@ phase = imfilter(phase,Ffilter2);
 phase = unwrap(phase);
 phase = unwrap(phase');
 
-h = gpuArray(phase * L .* (phase - 2*pi*D/p).^-1);
+h = phase * L .* (phase - 2*pi*D/p).^-1;
 
 cropsize = 100;
 h = 1e4*h((1+cropsize):(vdim-cropsize), (1+cropsize):(hdim-cropsize));
