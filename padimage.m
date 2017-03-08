@@ -3,10 +3,10 @@ function Ipad = padimage(I, p)
 %during convolutions and Fourier transforms. 
 
 %Find size of image
-[h, w] = size(I); 
+[h, w] = size(I);
 
 %Pad edges
-Ipad = zeros(h+2*p, w+2*p);  
+Ipad = zeros(h+2*p, w+2*p);
 
 %Middle
 Ipad(p+1:p+h, p+1:p+w) = I;

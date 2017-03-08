@@ -7,7 +7,7 @@ D = 50; %distance between camera and projector
 
 %=========Data Analysis Variables===========
 hpWin = 3; %width of high pass Gaussian filter
-use_gpu = 1; %use gpu to store and process images
+use_gpu = 0; %use gpu to store and process images
 
 %=========Read Images=============
 if use_gpu == 1
@@ -33,6 +33,8 @@ mingrey = min(min(dataim));
 maxgrey = max(max(refim));
 dataim = (dataim - mingrey)/(maxgrey - mingrey);
 
+dataim = padimage(dataim,1000);
+refim = padimage(refim,1000);
 %=========Plot Images=============
 %figure;
 %imshow(refim)
@@ -89,7 +91,7 @@ phase = unwrap(phase');
 
 h = phase * L .* (phase - 2*pi*D/p).^-1;
 
-cropsize = 100;
+cropsize = 1001;
 h = 1e4*h((1+cropsize):(vdim-cropsize), (1+cropsize):(hdim-cropsize));
 
 % h = abs(fft2(h));
