@@ -6,11 +6,26 @@ p = 1; %period of fringes
 D = 50; %distance between camera and projector
 
 %=========Data Analysis Variables===========
-hpWin = 90; %width of high pass Gaussian filter
+hpWin = 3; %width of high pass Gaussian filter
 
 %=========Read Images=============
-refim = im2double(imread('refim.png'));
-dataim = im2double(imread('dataim.png'));
+refim = gpuArray(rgb2gray(im2double(imread('refim.png'))));
+dataim = gpuArray(rgb2gray(im2double(imread('dataim.png'))));
+
+if (size(refim) ~= size(dataim))
+    disp('dimensions must match')
+end
+
+[vdim,hdim] = size(refim);
+
+%========Rescale greyscale images===========
+mingrey = min(min(refim));
+maxgrey = max(max(refim));
+refim = (refim - mingrey)/(maxgrey - mingrey);
+
+mingrey = min(min(dataim));
+maxgrey = max(max(refim));
+dataim = (dataim - mingrey)/(maxgrey - mingrey);
 
 %=========Plot Images=============
 %figure;
@@ -66,7 +81,10 @@ phase = imfilter(phase,Ffilter2);
 phase = unwrap(phase);
 phase = unwrap(phase');
 
-h = phase * L .* (phase - 2*pi*D/p).^-1;
+h = gpuArray(phase * L .* (phase - 2*pi*D/p).^-1);
+
+cropsize = 100;
+h = 1e4*h((1+cropsize):(vdim-cropsize), (1+cropsize):(hdim-cropsize));
 
 % h = abs(fft2(h));
 
@@ -74,8 +92,8 @@ h = phase * L .* (phase - 2*pi*D/p).^-1;
 
 %=========Surface and Contour Plots======
 figure;
-surf(1:1080, 1:1920, h,'edgecolor','none')
+surf(1:(vdim-2*cropsize), 1:(hdim-2*cropsize), h,'edgecolor','none')
 
 figure;
-contourf(1:1080, 1:1920, h)
+contourf(1:(vdim-2*cropsize), 1:(hdim-2*cropsize), h)   
 

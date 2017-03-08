@@ -3,7 +3,7 @@
 % implementation of FTP
 
 % set the test you want to generate
-im_test = 1;
+im_test = 3;
 
 refim = 1:(1920/96);
 refim = 0.5 + 0.5 * cos(2*pi*(refim/1920)*96);
@@ -30,7 +30,6 @@ switch im_test
         L = 300;
         p = 1;
         D = 50;
-        dataim = refim;
 %         x = linspace(1,1920);
 %         y = linspace(1,1080);
         [X,Y] = meshgrid(1:1920,1:1080);
