@@ -37,26 +37,6 @@ if (dispImg == 1)
     imshow(iim)
 end
 
-switch saveImg
-    case 1
-        if (genInv == 1)
-            imwrite(iim,'fringe1.png');
-            imwrite(invim,'fringe2.png');
-        else
-            imwrite(iim,'fringe.png');
-        end
-        
-    case 2
-        id = num2str(1e12*rand(1,1));
-        id = id(1:12);
-        if (genInv == 1)
-            imwrite(iim,strcat('fringe1-',id,'.png'));
-            imwrite(invim,strcat('fringe2-',id,'.png'));
-        else
-            imwrite(iim,strcat('fringe-',id','.png'));
-        end
-end
-
 if (genInv == 1) 
     invim = 1:(hdim/freq);
     invim = (lcolor - hcolor) * (.5 + 0.5*cos(2*pi*(invim/hdim)*freq)) + hcolor;
@@ -66,4 +46,24 @@ if (genInv == 1)
         figure;
         imshow(invim)
     end
+end
+
+switch saveImg
+    case 1
+        if (genInv == 1)
+            imwrite(iim,'fringe/fringe1.png');
+            imwrite(invim,'fringe/fringe2.png');
+        else
+            imwrite(iim,'fringe/fringe.png');
+        end
+        
+    case 2
+        id = num2str(1e12*rand(1,1));
+        id = id(1:12);
+        if (genInv == 1)
+            imwrite(iim,strcat('fringe/fringe1-',id,'.png'));
+            imwrite(invim,strcat('fringe/fringe2-',id,'.png'));
+        else
+            imwrite(iim,strcat('fringe/fringe-',id','.png'));
+        end
 end
