@@ -1,4 +1,4 @@
-function Ipad = padimage(I, p)
+function Ipad = padimage(I, p, gpu)
 %This function pads the edges of an image to minimize edge effects 
 %during convolutions and Fourier transforms. 
 
@@ -6,7 +6,11 @@ function Ipad = padimage(I, p)
 [h, w] = size(I);
 
 %Pad edges
-Ipad = zeros(h+2*p, w+2*p);
+if gpu==1
+    Ipad = zeros(h+2*p, w+2*p, 'gpuArray');
+else
+    Ipad = zeros(h+2*p, w+2*p);
+end
 
 %Middle
 Ipad(p+1:p+h, p+1:p+w) = I;

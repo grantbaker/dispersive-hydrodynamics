@@ -2,7 +2,7 @@
 
 %=========Experimental Parameters===========
 L = 300; %distance from camera to surface
-p = 1; %period of fringes
+p = 70; %period of fringes
 D = 50; %distance between camera and projector
 
 %=========Data Analysis Variables===========
@@ -22,7 +22,7 @@ if (size(refim) ~= size(dataim))
     disp('dimensions must match')
 end
 
-[vdim, hdim] = size(refim);
+% [vdim, hdim] = size(refim);
 
 %========Rescale greyscale images===========
 mingrey = min(min(refim));
@@ -33,8 +33,8 @@ mingrey = min(min(dataim));
 maxgrey = max(max(refim));
 dataim = (dataim - mingrey)/(maxgrey - mingrey);
 
-dataim = padimage(dataim,1000);
-refim = padimage(refim,1000);
+dataim = padimage(dataim,1000,use_gpu);
+refim = padimage(refim,1000,use_gpu);
 %=========Plot Images=============
 %figure;
 %imshow(refim)
@@ -91,17 +91,46 @@ phase = unwrap(phase');
 
 h = phase * L .* (phase - 2*pi*D/p).^-1;
 
-cropsize = 1001;
-h = 1e4*h((1+cropsize):(vdim-cropsize), (1+cropsize):(hdim-cropsize));
+% pat's fft scaling 
+% L = 400; 
+% 
+% N = 2^7; 
+% 
+% dx = L/N;
+% 
+% x=dx*[-N/2:N/2-1]; %-L/2:L/N:L/2-L/N;
+% 
+% dk = 2*pi/L;
+% 
+% k= fftshift(dk*[-N/2:N/2-1]); %[0:N/2-1 -N/2:-1]*2*pi/L;
+
+% end pat's fft scaling
+
+
+fft_h = fft(h);
+% max_amp = max(max(fft_h)
+fft_h(log(abs(fft_h))>-1) = fft_h(log(abs(fft_h))>-1).*exp(-1);
+h = ifft(fft_h);
+
+cropsize = 1100;
+
+[vdim, hdim] = size(h);
+
+h = 1e0*h((1+cropsize):(vdim-cropsize), (1+cropsize):(hdim-cropsize));
 
 % h = abs(fft2(h));
 
-%d = size(h)
+[vdim, hdim] = size(h);
 
 %=========Surface and Contour Plots======
 figure;
-surf(1:(vdim-2*cropsize), 1:(hdim-2*cropsize), h,'edgecolor','none')
+% surf(1:(vdim-2*cropsize), 1:(hdim-2*cropsize), h,'edgecolor','none')
+surf(1:vdim, 1:hdim, h, 'edgecolor','none')
+
 
 figure;
-contourf(1:(vdim-2*cropsize), 1:(hdim-2*cropsize), h)   
+% contourf(1:(vdim-2*cropsize), 1:(hdim-2*cropsize), h)   
+contourf(1:vdim, 1:hdim, h)
 
+figure;
+plot(1:vdim,log(abs(fft(h(:,1500)))))
