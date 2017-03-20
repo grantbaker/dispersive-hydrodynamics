@@ -2,12 +2,13 @@
 
 %=========Experimental Parameters===========
 L = 300; %distance from camera to surface
-p = 70; %period of fringes
+p = 5; %period of fringes
 D = 50; %distance between camera and projector
 
 %=========Data Analysis Variables===========
 hpWin = 3; %width of high pass Gaussian filter
 use_gpu = 0; %use gpu to store and process images
+save_memory = 1; %save memory by reusing the dataim and refim arrays
 
 %=========Read Images=============
 if use_gpu == 1
@@ -49,8 +50,14 @@ refim = padimage(refim,1000,use_gpu);
 
 %========Fourier Transform=========
 Ffilter = fspecial('disk',3); %creates filter
-refimFiltered = imfilter(refim, Ffilter); %filters reference image
-dataimFiltered = imfilter(dataim, Ffilter); %filters deformed image
+
+if save_memory == 1
+    refim = imfilter(refim, Ffilter); %filters reference image
+    dataim = imfilter(dataim, Ffilter); %filters deformed image
+else
+    refimFiltered = imfilter(refim, Ffilter); %filters reference image
+    dataimFiltered = imfilter(dataim, Ffilter); %filters deformed image    
+end
 
 %figure;
 %imshow(refimFiltered);
@@ -60,32 +67,58 @@ dataimFiltered = imfilter(dataim, Ffilter); %filters deformed image
 %imshow(dataimFiltered);
 %title('Filtered Deformed Image')
 
-refimFFT = fft(refimFiltered); %takes FFT of filtered reference image
-dataimFFT = fft(dataimFiltered); %takes FFT of filtered deformed image
-
+if save_memory == 1
+    refim = fft2(refim); %takes FFT of filtered reference image
+    dataim = fft2(dataim); %takes FFT of filtered deformed image
+else
+    refimFFT = fft2(refimFiltered); %takes FFT of filtered reference image
+    dataimFFT = fft2(dataimFiltered); %takes FFT of filtered deformed image
+end
+    
 %figure;
 %imshow(refimFFT);
 %title('FFT of Filtered Reference Image')
 
 %========Gaussian Window Data===========
-window = 1-gausswin(N,hpWin);
-window = repmat(window,1,c);
+if use_gpu == 1
+    window = gpuArray(1-gausswin(N,hpWin));
+    window = repmat(window,1,c);
+else
+    window = 1-gausswin(N,hpWin);
+    window = repmat(window,1,c);
+end
 
-refimFFT = refimFFT .* window;
-dataimFFT = dataimFFT .*window;
+if save_memory == 1
+    refim = refim .* window;
+    dataim = dataim .* window;
+else
+    refimFFT = refimFFT .* window;
+    dataimFFT = dataimFFT .*window;
+end
 
 %=========Inverse FFT=============
 Ffilter2 = fspecial('disk',13);
-refimReturned = ifft(refimFFT);
-dataimReturned = ifft(dataimFFT);
+
+if save_memory == 1
+    refim = ifft2(refim);
+    dataim = ifft2(dataim);
+else
+    refimReturned = ifft2(refimFFT);
+    dataimReturned = ifft2(dataimFFT);
+end
 
 %figure;
 %imshow(refimReturned)
 %title('Reference Image IFFT')
 
 %=========Calculate Phase Shift=========
-phase = angle(dataimReturned.*conj(refimReturned));
-phase = imfilter(phase,Ffilter2);
+if save_memory == 1
+    phase = angle(dataim.*conj(refim));
+else
+    phase = angle(dataimReturned.*conj(refimReturned));
+end
+
+phase = imfilter(phase, Ffilter2);
 phase = unwrap(phase);
 phase = unwrap(phase');
 
@@ -109,7 +142,7 @@ h = phase * L .* (phase - 2*pi*D/p).^-1;
 
 fft_h = fft(h);
 % max_amp = max(max(fft_h)
-fft_h(log(abs(fft_h))>-1) = fft_h(log(abs(fft_h))>-1).*exp(-1);
+fft_h(log(abs(fft_h))>100) = fft_h(log(abs(fft_h))>100).*exp(-1);
 h = ifft(fft_h);
 
 cropsize = 1100;
