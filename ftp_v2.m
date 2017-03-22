@@ -2,11 +2,11 @@
 
 %=========Experimental Parameters===========
 L = 300; %distance from camera to surface
-p = 5; %period of fringes
+p = 7; %period of fringes
 D = 50; %distance between camera and projector
 
 %=========Data Analysis Variables===========
-hpWin = 3; %width of high pass Gaussian filter
+hpWin = 5; %width of high pass Gaussian filter
 use_gpu = 0; %use gpu to store and process images
 save_memory = 1; %save memory by reusing the dataim and refim arrays
 
@@ -34,8 +34,8 @@ mingrey = min(min(dataim));
 maxgrey = max(max(refim));
 dataim = (dataim - mingrey)/(maxgrey - mingrey);
 
-dataim = padimage(dataim,1000,use_gpu);
-refim = padimage(refim,1000,use_gpu);
+dataim = padimage(dataim,10,use_gpu);
+refim = padimage(refim,10,use_gpu);
 %=========Plot Images=============
 %figure;
 %imshow(refim)
@@ -88,6 +88,7 @@ else
     window = repmat(window,1,c);
 end
 
+
 if save_memory == 1
     refim = refim .* window;
     dataim = dataim .* window;
@@ -112,6 +113,7 @@ end
 %title('Reference Image IFFT')
 
 %=========Calculate Phase Shift=========
+
 if save_memory == 1
     phase = angle(dataim.*conj(refim));
 else
@@ -145,7 +147,7 @@ fft_h = fft(h);
 fft_h(log(abs(fft_h))>100) = fft_h(log(abs(fft_h))>100).*exp(-1);
 h = ifft(fft_h);
 
-cropsize = 1100;
+cropsize = 50;
 
 [vdim, hdim] = size(h);
 
@@ -158,12 +160,12 @@ h = 1e0*h((1+cropsize):(vdim-cropsize), (1+cropsize):(hdim-cropsize));
 %=========Surface and Contour Plots======
 figure;
 % surf(1:(vdim-2*cropsize), 1:(hdim-2*cropsize), h,'edgecolor','none')
-surf(1:vdim, 1:hdim, h, 'edgecolor','none')
+surf(1:hdim, 1:vdim, h, 'edgecolor','none')
 
 
 figure;
 % contourf(1:(vdim-2*cropsize), 1:(hdim-2*cropsize), h)   
-contourf(1:vdim, 1:hdim, h)
+contourf(1:hdim, 1:vdim, h)
 
 figure;
-plot(1:vdim,log(abs(fft(h(:,1500)))))
+plot(1:vdim,log(abs(fft(h(:,800)))))

@@ -43,5 +43,8 @@ end
 figure;
 imshow(dataim)
 
+dataim  = repmat(dataim,[1,1,3]);
+refim = repmat(refim, [1,1,3]);
+
 imwrite(dataim,'dataim.png')
 imwrite(refim,'refim.png')
