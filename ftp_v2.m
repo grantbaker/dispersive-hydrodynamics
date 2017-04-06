@@ -2,12 +2,14 @@
 
 %=========Experimental Parameters===========
 L = 300; %distance from camera to surface
-p = 7; %period of fringes
+p = 30; %period of fringes
 D = 50; %distance between camera and projector
 
 %=========Data Analysis Variables===========
-hpWin = 5; %width of high pass Gaussian filter
-use_gpu = 0; %use gpu to store and process images
+hpWin = 1; %width of high pass Gaussian filter
+padding = 10; %amount of periodic padding
+cropping = 10; %amount of cropping
+use_gpu = 1; %use gpu to store and process images
 save_memory = 1; %save memory by reusing the dataim and refim arrays
 
 %=========Read Images=============
@@ -34,8 +36,8 @@ mingrey = min(min(dataim));
 maxgrey = max(max(refim));
 dataim = (dataim - mingrey)/(maxgrey - mingrey);
 
-dataim = padimage(dataim,10,use_gpu);
-refim = padimage(refim,10,use_gpu);
+dataim = padImagePeriodic(dataim,padding,use_gpu);
+refim = padImagePeriodic(refim,padding,use_gpu);
 %=========Plot Images=============
 %figure;
 %imshow(refim)
@@ -122,7 +124,7 @@ end
 
 phase = imfilter(phase, Ffilter2);
 phase = unwrap(phase);
-phase = unwrap(phase');
+phase = unwrap(phase')';
 
 h = phase * L .* (phase - 2*pi*D/p).^-1;
 
@@ -144,18 +146,27 @@ h = phase * L .* (phase - 2*pi*D/p).^-1;
 
 fft_h = fft(h);
 % max_amp = max(max(fft_h)
-fft_h(log(abs(fft_h))>100) = fft_h(log(abs(fft_h))>100).*exp(-1);
-h = ifft(fft_h);
+% fft_h(log(abs(fft_h))>100) = fft_h(log(abs(fft_h))>100).*exp(-1);
+% h = ifft(fft_h);
 
-cropsize = 50;
+% cropsize = round(1.5*padding);
+cropsize = cropping;
 
 [vdim, hdim] = size(h);
 
 h = 1e0*h((1+cropsize):(vdim-cropsize), (1+cropsize):(hdim-cropsize));
 
-% h = abs(fft2(h));
+% shifting x and y coordinates
 
 [vdim, hdim] = size(h);
+x = repmat(1:hdim,[vdim,1]);
+y = repmat((1:vdim)',[1,hdim]);
+
+ x = x - h .* x / L;
+ y = y - h .* y / L;
+
+% h = abs(fft2(h));
+
 
 %=========Surface and Contour Plots======
 figure;
@@ -169,3 +180,7 @@ contourf(1:hdim, 1:vdim, h)
 
 figure;
 plot(1:vdim,log(abs(fft(h(:,800)))))
+
+
+
+

@@ -33,6 +33,9 @@ end
 % figure;
 % imshow(abs(hilbert(dataim').'))
 
+refim = padImagePeriodic(refim, 100, 0);
+dataim = padImagePeriodic(dataim, 100, 0);
+
 refim_ft = hilbert(refim')';
 dataim_ft = hilbert(dataim').';
 delta_phi = imag(log(refim_ft.*dataim_ft));
@@ -52,6 +55,8 @@ fft_h_y = fft(h(1,1:hdim));
 
 figure;
 plot(log(abs(fft_h_y)))
+
+[hdim, vdim] = size(h);
 
 figure;
 pl = surf(1:hdim, 1:vdim, h);

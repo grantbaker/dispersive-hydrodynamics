@@ -5,9 +5,14 @@
 % set the test you want to generate
 im_test = 3;
 
-refim = 1:(1920/96);
-refim = 0.5 + 0.5 * cos(2*pi*(refim/1920)*96);
-refim = repmat(refim,1080,96);
+hdim = 3000;
+vdim = 3000;
+freq = 100;
+
+
+refim = 1:(hdim/freq);
+refim = 0.5 + 0.5 * cos(2*pi*(refim/hdim)*freq);
+refim = repmat(refim,vdim,freq);
 
 figure;
 imshow(refim)
@@ -28,14 +33,14 @@ switch im_test
         
     case 3
         L = 300;
-        p = 1;
+        p = hdim/freq;
         D = 50;
 %         x = linspace(1,1920);
 %         y = linspace(1,1080);
-        [X,Y] = meshgrid(1:1920,1:1080);
-        z = sin(10*(X+Y)/1000);
+        [X,Y] = meshgrid(1:hdim,1:vdim);
+        z = 30*sin(10*(X+Y)/1000);
         phi = (2*pi*D*z/p).*(z-L).^-1;
-        dataim = .5+.5*cos(2*pi*(X/1920)*96 + phi);
+        dataim = .5+.5*cos(2*pi*(X/hdim)*freq + phi);
         
         
 end
