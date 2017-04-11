@@ -5,9 +5,9 @@
 % set the test you want to generate
 im_test = 3;
 
-hdim = 3000;
-vdim = 3000;
-freq = 100;
+hdim = 1000;
+vdim = 1000;
+freq = 50;
 
 
 refim = 1:(hdim/freq);
