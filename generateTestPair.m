@@ -5,9 +5,9 @@
 % set the test you want to generate
 im_test = 3;
 
-hdim = 1000;
-vdim = 1000;
-freq = 50;
+hdim = 4000;
+vdim = 4000;
+freq = 200;
 
 
 refim = 1:(hdim/freq);
@@ -38,7 +38,10 @@ switch im_test
 %         x = linspace(1,1920);
 %         y = linspace(1,1080);
         [X,Y] = meshgrid(1:hdim,1:vdim);
-        z = 30*sin(10*(X+Y)/1000);
+%         z = 30*sin(10*(X+Y)/100);
+        z = 100*exp(-((X-(hdim/2)).^2)/(hdim^2/10)-((Y-(vdim/2)).^2)/(hdim^2/10));
+        figure;
+        surf(1:hdim,1:vdim,z,'edgecolor','none')
         phi = (2*pi*D*z/p).*(z-L).^-1;
         dataim = .5+.5*cos(2*pi*(X/hdim)*freq + phi);
         

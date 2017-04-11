@@ -2,14 +2,14 @@
 close all; 
 %=========Experimental Parameters===========
 L = 300; %distance from camera to surface
-p = 30; %period of fringes
+p = 20; %period of fringes
 D = 50; %distance between camera and projector
 
 %=========Data Analysis Variables===========
 hpWin = 1; %width of high pass Gaussian filter
 padding = 0; %amount of periodic padding
 cropping = 0; %amount of cropping
-use_gpu = 0; %use gpu to store and process images
+use_gpu = 1; %use gpu to store and process images
 save_memory = 1; %save memory by reusing the dataim and refim arrays
 
 %=========Read Images=============
