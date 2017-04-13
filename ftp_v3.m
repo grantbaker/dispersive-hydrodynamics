@@ -1,15 +1,15 @@
 %FTP Code
 close all; 
 %=========Experimental Parameters===========
-L = 300; %distance from camera to surface
-p = 20; %period of fringes
-D = 50; %distance between camera and projector
+L = 140; %distance from camera to surface
+p = 97; %period of fringes
+D = 35; %distance between camera and projector
 
 %=========Data Analysis Variables===========
-hpWin = 1; %width of high pass Gaussian filter
+hpWin = 10; %width of high pass Gaussian filter
 padding = 0; %amount of periodic padding
 cropping = 0; %amount of cropping
-use_gpu = 1; %use gpu to store and process images
+use_gpu = 0; %use gpu to store and process images
 save_memory = 1; %save memory by reusing the dataim and refim arrays
 
 %=========Read Images=============
@@ -24,6 +24,9 @@ end
 if (size(refim) ~= size(dataim))
     disp('dimensions must match')
 end
+
+refim = refim';
+dataim = dataim';
 
 % [vdim, hdim] = size(refim);
 
@@ -172,8 +175,6 @@ cropsize = cropping;
 
 [vdim, hdim] = size(h);
 
-h = 1e0*h((1+cropsize):(vdim-cropsize), (1+cropsize):(hdim-cropsize));
-
 % shifting x and y coordinates
 
 [vdim, hdim] = size(h);
@@ -214,6 +215,16 @@ surf(1:hdim, 1:vdim, h, 'edgecolor','none')
 xlabel('$x$','Interpreter','latex')
 ylabel('$y$','Interpreter','latex')
 zlabel('$u(x,y)$','Interpreter','latex')
+
+
+cropsize = 150;
+
+h = 1e0*h((1+cropsize):(vdim-cropsize), (1+cropsize):(hdim-cropsize));
+
+figure;
+contourf(1:(hdim-2*cropsize),1:(vdim-2*cropsize),log(h - 1.5*min(min(h))))
+
+
 
 
 % figure;

@@ -1,15 +1,15 @@
 %FTP Code
 
 %=========Experimental Parameters===========
-L = 300; %distance from camera to surface
-p = 30; %period of fringes
+L = 300; %distance fclrom camera to surface
+p = 600; %period of fringes
 D = 50; %distance between camera and projector
 
 %=========Data Analysis Variables===========
 hpWin = 1; %width of high pass Gaussian filter
-padding = 10; %amount of periodic padding
-cropping = 10; %amount of cropping
-use_gpu = 1; %use gpu to store and process images
+padding = 300; %amount of periodic padding
+cropping = 330; %amount of cropping
+use_gpu = 0; %use gpu to store and process images
 save_memory = 1; %save memory by reusing the dataim and refim arrays
 
 %=========Read Images=============
