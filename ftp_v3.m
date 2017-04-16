@@ -1,9 +1,9 @@
 %FTP Code
 close all; 
 %=========Experimental Parameters===========
-L = 140; %distance from camera to surface
-p = 97; %period of fringes
-D = 35; %distance between camera and projector
+L = 1435; %distance from camera to surface
+p = 100; %period of fringes
+D = 380; %distance between camera and projector
 
 %=========Data Analysis Variables===========
 hpWin = 10; %width of high pass Gaussian filter
@@ -25,8 +25,14 @@ if (size(refim) ~= size(dataim))
     disp('dimensions must match')
 end
 
-refim = refim';
-dataim = dataim';
+mask = refim > .7; % whatever value works.
+refim = regionfill(refim, mask);
+
+mask = dataim > .7;
+dataim = regionfill(dataim,mask);
+
+% refim = refim';
+% dataim = dataim';
 
 % [vdim, hdim] = size(refim);
 
@@ -52,13 +58,13 @@ refim = padImagePeriodic(refim,padding,use_gpu);
 % refim = w.*refim; 
 % dataim = w.*dataim; 
 % 
-% figure;
-% imshow(refim)
-% title('Reference Image')
-% 
-% figure;
-% imshow(dataim)
-% title('Deformed Image')
+figure;
+imshow(refim)
+title('Reference Image')
+
+figure;
+imshow(dataim)
+title('Deformed Image')
 
 
 %=========Processing==============
@@ -198,12 +204,13 @@ k = (dk*[-N/2:N/2-1]);
 [kx,ky] = meshgrid(k,k); %[0:N/2-1 -N/2:-1]*2*pi/L;
 rad = sqrt(kx.^2 + ky.^2); %%define polar radius
 
-band = .4; %1/2 bandwidth of filter
+band = 1; %1/2 bandwidth of filter
 l = 3; %steepness of transition of filter, making this too large will result in some aliasing. 
 filter = 0.5*(tanh(l*(rad + band)) - tanh(l*(rad - band))); 
 surf(filter,'edgecolor','none')
 F = fftshift(fft2(h)).*filter;  
 
+figure;
 surf(abs(F),'edgecolor','none') % in case you want to
 % check decay of the fft
 h = real(ifft2(fftshift(F),'symmetric'));
@@ -217,12 +224,13 @@ ylabel('$y$','Interpreter','latex')
 zlabel('$u(x,y)$','Interpreter','latex')
 
 
-cropsize = 150;
+cropsize = 0;
 
 h = 1e0*h((1+cropsize):(vdim-cropsize), (1+cropsize):(hdim-cropsize));
 
 figure;
 contourf(1:(hdim-2*cropsize),1:(vdim-2*cropsize),log(h - 1.5*min(min(h))))
+contourf(1:(hdim-2*cropsize),1:(vdim-2*cropsize),h)
 
 
 
