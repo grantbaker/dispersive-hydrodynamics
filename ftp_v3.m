@@ -18,7 +18,11 @@ if use_gpu == 1
     dataim = gpuArray(rgb2gray(im2double(imread('dataim.png'))));
 else 
     refim = rgb2gray(im2double(imread('refim.png')));
-    dataim = rgb2gray(im2double(imread('dataim.png')));
+    refim = refim';
+    refim = refim(1:3648,1824:5471);
+    dataim = im2double(imread('dataim.png'));
+    dataim = dataim(1:3648,1824:5471);
+%     dataim = rgb2gray(im2double(imread('dataim.png')));
 end
 
 if (size(refim) ~= size(dataim))
@@ -28,8 +32,8 @@ end
 mask = refim > .7; % whatever value works.
 refim = regionfill(refim, mask);
 
-mask = dataim > .7;
-dataim = regionfill(dataim,mask);
+% mask = dataim > .99;
+% dataim = regionfill(dataim,mask);
 
 % refim = refim';
 % dataim = dataim';
@@ -164,6 +168,7 @@ x=dx*[-N/2:N/2-1]; %-L/2:L/N:L/2-L/N;
 y = x; 
 dk = 2*pi/L;
 
+figure;
 kx= fftshift(dk*[-N/2:N/2-1]); %[0:N/2-1 -N/2:-1]*2*pi/L;
 ky = fftshift(dk*[-N/2:N/2-1]);
 K = meshgrid(kx,ky); 
