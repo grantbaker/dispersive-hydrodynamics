@@ -1,0 +1,76 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,enumerate,fancyhdr,calc}
+
+\newcommand{\mmm}{1in}
+\newcommand{\hhh}{28pt}
+
+\usepackage[margin=\mmm]{geometry}
+
+\addtolength{\topmargin}{\hhh}
+\setlength{\textheight}{10.5in-\mmm-\mmm-\hhh}
+\setlength{\parindent}{0in}
+
+\pagestyle{fancy}
+
+\newcommand{\dhl}{Dispersive Hydrodynamics Lab}
+\newcommand{\ucb}{University of Colorado Boulder}
+\newcommand{\appm}{Department of Applied Mathematics}
+\newcommand{\me}{Grant Baker}
+\newcommand{\ymd}{2017-04-28}
+
+\title{\textbf{\dhl}\\ Water Table Experiment:\\ Data Collection and Image Processing}
+\author{\textbf{\me}\\ \textbf{\appm}\\ \textbf{\ucb}}
+\date{\textbf{\ymd}}
+
+\begin{document}
+
+\lhead{{\textbf{\me} \\ \textbf{\ymd}}}
+\rhead{{\ucb \\ \appm \\ \dhl}}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\headheight}{39pt}
+
+\maketitle
+
+\section*{Overview}
+
+In this document I will document the full process for data collection and image processing currently used by the water table team, consisting of Pat Sprenger, Adam Binswanger, and myself.\\
+
+This process has three main stages: the experimental setup; the data collection; and the image processing. The experimental setup involves ensuring the water table and imaging equipment are set up properly. Data collection involves the process of using the camera and a laptop to collect images and store them properly. Image processing involves combining data from multiple images, removing noise and glare, and processing using Fourier Transform Profilometry to extract water height data.\\
+
+\section*{The Experimental Setup}
+
+\subsection*{The Water Table}
+
+The setup involves a water table with a sluice gate, a water reservoir, and a pump. Ensure that the table is set up properly with the following steps:
+\begin{enumerate}[(i)]
+    \item Make sure the tubes are connected to the pump and the PVC apparatus, and the PVC pipes are covered in cloths and sponges are in the center of the rectangle.
+
+    \item The sluice gate should be at the proper height (both sides), with both edges sealed watertight. The sealing is done with a watertight sealant, put on the sides of the gate and cut with a razor to the correct thickness.
+
+    \item The hexagonal honeycomb flow straightener should be pushed to the bottom of the tank, and up against the gate.
+
+    \item Ensure there is enough water in the tank (it should be nearly full) and there is enough titanium dioxide in the water to provide a sufficiently colored flow on the table. Typically, a few scoops is sufficient, and adding more does not improve coloration.
+\end{enumerate}
+
+\subsection*{Imaging Equipment}
+
+The imaging equipment consists of the projector mounted above the table, a camera mounted near the projector, and a laptop to control the camera and store images.
+
+\begin{enumerate}[(i)]
+    \item The projector should be fitted to project on just the table, and focused to the undeformed water surface.
+
+    \item The camera typically used is the Canon 7D Mark II. Mount it near the projector and power it with either a battery or the A/C power adapter. Make sure it has the zoom lens and the polarizing lens attached.
+
+    \item The laptop used to run the projector and camera should be Windows or Mac, and should have the Canon EOS Utility software installed.
+
+    \item Project a fringe pattern with the projector from the laptop. One can be generated with the {\tt generateFringePattern.m} script.
+
+    \item Plug the camera in via USB and monitor it from the laptop. Focus the camera by looking at the live image on the laptop through the Canon software. If needed, further focus the projector as well. Rotate the polarizing lens to minimize glare on the water's surface, if needed.
+\end{enumerate}
+
+\section*{Data Collection}
+
+Collecting data involves taking pictures with the camera and storing them on the laptop and on Google Drive.
+
+
+\end{document}
