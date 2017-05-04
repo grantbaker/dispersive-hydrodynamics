@@ -16,7 +16,7 @@
 \newcommand{\ucb}{University of Colorado Boulder}
 \newcommand{\appm}{Department of Applied Mathematics}
 \newcommand{\me}{Grant Baker}
-\newcommand{\ymd}{2017-04-28}
+\newcommand{\ymd}{2017-05-04}
 
 \title{\textbf{\dhl}\\ Water Table Experiment:\\ Data Collection and Image Processing}
 \author{\textbf{\me}\\ \textbf{\appm}\\ \textbf{\ucb}}
@@ -49,7 +49,7 @@ The setup involves a water table with a sluice gate, a water reservoir, and a pu
 
     \item The hexagonal honeycomb flow straightener should be pushed to the bottom of the tank, and up against the gate.
 
-    \item Ensure there is enough water in the tank (it should be nearly full) and there is enough titanium dioxide in the water to provide a sufficiently colored flow on the table. Typically, a few scoops is sufficient, and adding more does not improve coloration.
+    \item Ensure there is enough water in the tank (it should be nearly full) and there is enough titanium dioxide in the water to provide a sufficiently colored flow on the table. Typically, a few scoops is sufficient, and adding more typically does not improve coloration.
 \end{enumerate}
 
 \subsection*{Imaging Equipment}
@@ -71,6 +71,63 @@ The imaging equipment consists of the projector mounted above the table, a camer
 \section*{Data Collection}
 
 Collecting data involves taking pictures with the camera and storing them on the laptop and on Google Drive.
+
+\subsection*{Running the Experiment}
+
+If the table and imaging equipment are set up properly, the process of running the experiment is straightforward.
+
+\begin{enumerate}[(i)]
+    \item Turn the lights off and close the blinds. Minimize all light coming from sources other than the projector.
+
+    \item Take all images with the Canon EOS Utility. It is easiest if it is set to save the images directly on the laptop, and best if they are in the {\tt .RAW} file format.
+
+    \item Take many images for each experiment, to ensure optimal performance from the averaging process.
+
+    \item Take many reference images of the undeformed water surface.
+\end{enumerate}
+
+\subsection*{Data Storage}
+
+So as to not lose data, it is important to store the images in two redundant locations.
+
+\begin{enumerate}[(i)]
+    \item Save all images collected in a directory titled the date.
+
+    \item Create a text file in the same directory. Following a similar format to the text files that already exist, label the images in the text file.
+
+    \item During that process, discard any unnecessary images.
+
+    \item Upload the entire directory to the Google Drive folder.
+
+    \item Copy the directory to the water table hard drive.
+\end{enumerate}
+
+\section*{Image Processing}
+
+To extract height data from our images, we use Fourier Transform Profilometry, as outlined in {\it Cobelli 2009}.
+
+\subsection*{Preprocessing}
+
+\begin{enumerate}[(i)]
+    \item First, use a raw image processing program to rotate or crop the images. Make sure each image in the data image set as well as the reference image set are processed in the same way. The current program used to do so is UFRaw. (Alternatively, write a script to batch process all images in this manner.)
+
+    \item Use the {\tt imageaveraging.m} script to average all the images in each data set. This script both removes most of the glare from the image and employs a chi-square test to ensure the data is normal and that this averaging process is justified.
+
+    \item Save the results in the {\tt images} directory as {\tt X\_data.png} and {\tt X\_ref.png}. Then run {\tt ./im.sh X} to set up the MATLAB script.
+\end{enumerate}
+
+\subsection*{Fourier Transform Profilometry}
+
+We employ Fourier Transform Profilometry to extract height data, and use a number of filtering techniques to do so.
+
+\begin{enumerate}[(i)]
+    \item Adjust the parameters in the {\tt ftp\_X.m} script, where {\tt X} is the latest version of the FTP code. (The current version is {\tt v3}.)
+
+    \item Run the script. It will produce height data. Adjust filtering parameters as necessary.
+
+    \item If desired, save the height data.
+\end{enumerate}
+
 
 
 \end{document}
